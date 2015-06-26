@@ -2,10 +2,12 @@ from rest_framework import views
 from rest_framework.parsers import FileUploadParser
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+from rest_framework import permissions
 
 
 class FileUploadInit(views.APIView):
     renderer_classes = (JSONRenderer, )
+    # permission_classes = (permissions.IsAuthenticated)
 
     def post(self, request):
         print("init upload")
