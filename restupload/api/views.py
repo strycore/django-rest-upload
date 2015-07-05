@@ -1,3 +1,9 @@
+import os
+import uuid
+import json
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.core.cache import cache
 from rest_framework import views
 from rest_framework.parsers import FileUploadParser
 from rest_framework.renderers import JSONRenderer
@@ -10,10 +16,11 @@ class FileUploadInit(views.APIView):
     # permission_classes = (permissions.IsAuthenticated)
 
     def post(self, request):
-        print("init upload")
-        print(request.data)
+        upload_id = uuid.uuid4()
+        cache.set(upload_id, {'filename': request.data['title']}, 60)
+        upload_url = reverse('upload_file', kwargs={'filename': upload_id})
         response = Response()
-        response['Location'] = "/api/upload/bliblu"
+        response['Location'] = upload_url
         return response
 
 
@@ -22,8 +29,19 @@ class FileUploadView(views.APIView):
     renderer_classes = (JSONRenderer, )
 
     def put(self, request, filename):
+        upload_data = cache.get(filename)
+        print upload_data
+        if not upload_data:
+            return Response(404)
+
+        upload_path = os.path.join(settings.MEDIA_ROOT, upload_data['filename'])
+        if 'file' not in request.data:
+            return Response(json.dumps({'error': 'No file in request'}))
         file_obj = request.data['file']
-        with open('/home/strider/uploads/bliblu', 'wb+') as destination:
+        with open(upload_path, 'wb+') as destination:
             for chunk in file_obj.chunks():
                 destination.write(chunk)
-        return Response(status=204)
+        file_data = {
+            'url': settings.MEDIA_URL + upload_data['filename']
+        }
+        return Response(json.dumps(file_data))

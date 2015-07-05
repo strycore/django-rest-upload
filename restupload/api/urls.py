@@ -4,6 +4,7 @@ from .views import FileUploadInit, FileUploadView
 
 urlpatterns = [
     url(r'^/token$', obtain_auth_token),
-    url(r'^/upload$', FileUploadInit.as_view()),
-    url(r'^/upload/(?P<filename>[\w\-]+)', FileUploadView.as_view()),
+    url(r'^/upload$', FileUploadInit.as_view(), name="upload_init"),
+    url(r'^/upload/(?P<filename>[\w\-]+)', FileUploadView.as_view(),
+        name="upload_file"),
 ]
