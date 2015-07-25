@@ -13,7 +13,7 @@ from rest_framework import permissions
 
 class FileUploadInit(views.APIView):
     renderer_classes = (JSONRenderer, )
-    # permission_classes = (permissions.IsAuthenticated)
+    permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request):
         upload_id = uuid.uuid4()
