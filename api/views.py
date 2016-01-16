@@ -18,7 +18,9 @@ class FileUploadInit(views.APIView):
     def post(self, request):
         upload_id = uuid.uuid4()
         cache.set(upload_id, {'filename': request.data['title']}, 60)
-        upload_url = reverse('upload_file', kwargs={'filename': upload_id})
+        upload_url = request.build_absolute_uri(
+            reverse('upload_file', kwargs={'filename': upload_id})
+        )
         response = Response()
         response['Location'] = upload_url
         return response
@@ -42,6 +44,8 @@ class FileUploadView(views.APIView):
             for chunk in file_obj.chunks():
                 destination.write(chunk)
         file_data = {
-            'url': settings.MEDIA_URL + upload_data['filename']
+            'url': request.build_absolute_uri(
+                settings.MEDIA_URL + upload_data['filename']
+            )
         }
         return Response(json.dumps(file_data))
