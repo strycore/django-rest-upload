@@ -1,5 +1,6 @@
 Django==1.9.1
 django-cors-headers==1.1.0
-django-progressbarupload==0.1.6
+#django-progressbarupload==0.1.7
+-e git+http://github.com/strycore/django-progressbarupload.git@0.1.7#egg=django-progressbarupload
 djangorestframework==3.3.2
 ipython==4.0.2
