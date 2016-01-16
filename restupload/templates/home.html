@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="/static/jcrop/css/Jcrop.css">
+  <link rel="stylesheet" href="/static/jcrop-fileinput/dist/jcrop-fileinput.css">
+  <style type="text/css" media="all">
+    body {
+      font-family: sans;
+    }
+
+  </style>
+
+</head>
+<body>
+<form action="/upload" method="post" enctype="multipart/form-data" id='upload-form'>
+  {% csrf_token %}
+  <input type="text" name="some_field" value="test val" />
+  <select name="some_select" multiple>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <input type="file" name="image" id="image-input"/>
+  <input type="submit" value="send"/>
+</form>
+</body>
+<script src="/static/jquery/dist/jquery.js"></script>
+<script src="/static/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
+<script src="/static/jcrop/js/Jcrop.js"></script>
+<script src="/static/jcrop-fileinput/dist/jcrop-fileinput.js"></script>
+<script type="text/javascript">
+  (function() {
+    function onFormSubmit(event) {
+      console.log(event);
+
+      var form = document.getElementById('upload-form');
+      for (var i=0; i < form.length; i++) {
+        console.log(form[i]);
+      }
+    };
+
+    $("#image-input").JCropFileInput({
+      onSubmit: onFormSubmit
+    });
+  })();
+</script>
+</html>

@@ -32,7 +32,7 @@ class FileUploadView(views.APIView):
         upload_data = cache.get(filename)
         print upload_data
         if not upload_data:
-            return Response(404)
+            return Response(status=404)
 
         upload_path = os.path.join(settings.MEDIA_ROOT, upload_data['filename'])
         if 'file' not in request.data:

@@ -1,0 +1,5 @@
+Django==1.9.1
+django-cors-headers==1.1.0
+django-progressbarupload==0.1.6
+djangorestframework==3.3.2
+ipython==4.0.2
